@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-08 11:48:16
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-10 00:26:52
+ * @LastEditTime: 2021-08-10 23:59:11
  * @Description: file content
  */
 import './sdk/mqtt'
@@ -14,7 +14,7 @@ var cleansession = true
 var deviceId = 'test'+new Date().getTime() // MQTT 用户自定义deviceID
 var appId = 'on4ng0' // 从console控制台获取
 var clientId = deviceId + '@' + appId // deviceID@AppID
-var reconnectTimeout = 20000 // 超时重连时间
+var reconnectTimeout = 5000 // 超时重连时间
 var username = 'test' // 用户名，在console中注册
 // var password ='YWMtEa31WvKOEeuKAoGk5jJh8ajI7Z3Lsk1KtyzEZ3_lc1QQiFTg8o4R65I2hUgU8EeNAwMAAAF7AE6YsgBPGgD4W3LbZaK49g85xoMrFu_2OJLvHARRy4p_REb8Sr7pIw' // 用户密码为第一步中申请的token
 // var password = ''
@@ -24,9 +24,12 @@ let Paho = window.Paho || {}
 export default {
   data() {
     return {
+      onlineCount: 0,
+      onlineList: [],
       mqtt: null,
       topic: 't/t1',
       msgList: [],
+      topicList:'',
     }
   },
   methods: {
@@ -59,7 +62,7 @@ export default {
 
       var params = {
         grant_type: grantType,
-        username: localStorage.getItem('username'),
+        username: 98989,
         password: 123
       }
       // 发送ajax请求
@@ -73,8 +76,8 @@ export default {
       )
     
       var options = {
-        userName: localStorage.getItem('username'),
-        password: localStorage.getItem('token'),
+        userName: 'test',
+        password: 'YWMtEa31WvKOEeuKAoGk5jJh8ajI7Z3Lsk1KtyzEZ3_lc1QQiFTg8o4R65I2hUgU8EeNAwMAAAF7AE6YsgBPGgD4W3LbZaK49g85xoMrFu_2OJLvHARRy4p_REb8Sr7pIw',
         useSSL: true,
         timeout: 3,
         onSuccess: this.onConnect,
@@ -120,20 +123,42 @@ export default {
     onMessageArrived(message) {
       var topic = message.destinationName
       var payload = message.payloadString
+      let that = this
       if(payload!='heart'){
         let obj = JSON.parse(payload)
-        if(obj.username==localStorage.getItem('username')){
-          obj.isMe = true
-        }else{
-          obj.isMe =false
+        //接收消息
+        if(obj.type=='text'||obj.type=='image'){
+          if(obj.username==localStorage.getItem('username')){
+            obj.isMe = true
+          }else{
+            obj.isMe =false
+          }
+          obj.avatar = obj.username[0]
+          this.msgList.push(obj)
         }
-        obj.avatar = obj.username[0]
-        this.msgList.push(obj)
-        // this.msgList = this.msgList.concat([])
-        // this.msgList = JSON.parse(JSON.stringify(this.msgList))
-        // this.msgList=Object.assign({},this.msgList)
-        console.log(this.msgList)
-        
+        //获取在线人数
+        if(obj.type=='online'){
+          this.onlineList.push(obj.username)
+          //去重
+          this.onlineList = [...new Set(this.onlineList)]
+          
+          let _obj = JSON.stringify({
+            type: 'onlineCount',
+            count: that.onlineList
+          })
+          
+          this.sendMessage(_obj)
+        }
+        //设置z在线人数
+        if(obj.type=="onlineCount"){
+          this.onlineCount = obj.count.length
+        }
+        if(obj.type=='list'){
+          this.topicList = obj.list
+        }
+      }else{
+        let name = JSON.stringify({type:'online',username: localStorage.getItem('username')})
+        this.sendMessage(name);
       }
       console.log("recv msg : " + topic + "   " + payload)
     }

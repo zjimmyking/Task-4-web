@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:35
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-08 21:44:51
+ * @LastEditTime: 2021-08-10 23:52:28
  * @Description: file content
 -->
 <template>
@@ -52,6 +52,9 @@ import Raise from "../assets/image/raise_icon.png";
 
 import TimeIcon from "../assets/image/time_icon.png";
 export default {
+  props: {
+    list: Array
+  },
   data() {
     return {
       count: '',
@@ -59,38 +62,38 @@ export default {
       Love: Love,
       Raise: Raise,
       TimeIcon: TimeIcon,
-      list: [
-        {
-          name: "还不会Hook？一份React Hook学习笔记",
-          count: 599,
-          info:'Hook 是 React 16.8.0 版本增加的新特性，可以在函数组件中使用 state 以及其他的 React 特性。',
-          url: "https://imgeek.org/article/825358054"
-        },
-        {
-          name: "JAVA面向对象简介",
-          count: 592,
-          info:'Java是一种面向对象的程序设计语言，了解面向对象的编程思想对于学习Java开发相当重要。',
-          url: 'https://imgeek.org/article/825358049'
-        },
-        {
-          name: "iOS 组件化方案",
-          count: 321,
-          info: '为什么要组件化？易移植、易维护、易重构、易根据业务做加减法、易开发',
-          url: 'https://imgeek.org/article/825358044'
-        },
-        {
-          name: "OC与Swift API的交互",
-          count: 194,
-          info: '互用性是让 Swift 和 Objective-C 相接合的一种特性，使你能够在一种语言编写的文件中使用另一种语言。当你准备开始把 Swift 融入到你的开发流程中时，你应该懂得如何利用互用性来重新定义并提高你写 Cocoa 应用的方案。',
-          url: 'https://imgeek.org/article/825358042',
-        },
-        {
-          name: "你可能不知道的动态组件玩法?",
-          count: 121,
-          info: '具体是怎么玩呢？别着急，听我慢慢道来，看完后会感慨Vue组件还能这么玩🐶，还会学会一个Stylelint插件，配有DEMO，以及隐藏在最后的彩蛋。',
-          url: 'https://imgeek.org/article/825358019',
-        },
-      ],
+      // list: [
+      //   {
+      //     name: "还不会Hook？一份React Hook学习笔记",
+      //     count: 599,
+      //     info:'Hook 是 React 16.8.0 版本增加的新特性，可以在函数组件中使用 state 以及其他的 React 特性。',
+      //     url: "https://imgeek.org/article/825358054"
+      //   },
+      //   {
+      //     name: "JAVA面向对象简介",
+      //     count: 592,
+      //     info:'Java是一种面向对象的程序设计语言，了解面向对象的编程思想对于学习Java开发相当重要。',
+      //     url: 'https://imgeek.org/article/825358049'
+      //   },
+      //   {
+      //     name: "iOS 组件化方案",
+      //     count: 321,
+      //     info: '为什么要组件化？易移植、易维护、易重构、易根据业务做加减法、易开发',
+      //     url: 'https://imgeek.org/article/825358044'
+      //   },
+      //   {
+      //     name: "OC与Swift API的交互",
+      //     count: 194,
+      //     info: '互用性是让 Swift 和 Objective-C 相接合的一种特性，使你能够在一种语言编写的文件中使用另一种语言。当你准备开始把 Swift 融入到你的开发流程中时，你应该懂得如何利用互用性来重新定义并提高你写 Cocoa 应用的方案。',
+      //     url: 'https://imgeek.org/article/825358042',
+      //   },
+      //   {
+      //     name: "你可能不知道的动态组件玩法?",
+      //     count: 121,
+      //     info: '具体是怎么玩呢？别着急，听我慢慢道来，看完后会感慨Vue组件还能这么玩🐶，还会学会一个Stylelint插件，配有DEMO，以及隐藏在最后的彩蛋。',
+      //     url: 'https://imgeek.org/article/825358019',
+      //   },
+      // ],
     };
   },
   mounted(){
@@ -98,15 +101,15 @@ export default {
   },
   methods:{
     raise(){
-      let _list = this.list 
-      _list[this.idx].count++ 
-      this.list= Object.assign({},_list)
+      // let _list = this.list 
+      // _list[this.idx].count++ 
+      // this.list= Object.assign({},_list)
       this.$emit('updateraise',this.list[this.idx].name)
     },
     love(){
-      let _list = this.list 
-      _list[this.idx].count++ 
-      this.list= Object.assign({},_list)
+      // let _list = this.list 
+      // _list[this.idx].count++ 
+      // this.list= Object.assign({},_list)
       this.$emit('updatelove',this.list[this.idx].name)
     },
     getCountDown(){
@@ -124,6 +127,7 @@ export default {
           if(this.idx==5){
             this.idx=0
           }
+          this.$emit('updateIdx',this.idx)
           this.getCountDown()
           }
         }, 1000)

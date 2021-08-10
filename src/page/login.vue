@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:04
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-08 17:06:00
+ * @LastEditTime: 2021-08-10 15:34:32
  * @Description: file content
 -->
 <template>
@@ -43,7 +43,7 @@ export default {
     register(){
       //如果存在此用户 就直接登录 不存在就先注册再登陆
      this.showLoading = true
-      this.$im.register(this.username)
+      // this.$im.register(this.username)
       localStorage.setItem('username',this.username)
       setTimeout(()=>{
         this.showLoading =false
