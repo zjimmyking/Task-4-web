@@ -2,18 +2,18 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:42
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-08 01:49:51
+ * @LastEditTime: 2021-08-10 00:48:49
  * @Description: file content
 -->
 <template>
   <div class="Right">
     <div class="Right_t">
-      <div class="chat" v-for="(item,index) in list" :key="index">
+      <div class="chat" v-for="(item,index) in msgList" :key="index">
         <div class="chat_l" v-if="!item.isMe">
           <div class="chat_l_t">
-            <span class="avatar">M</span>
-            <span class="name">Marry</span>
-            <span class="time">13:45</span>
+            <span class="avatar">{{item.avatar}}</span>
+            <span class="name">{{item.username}}</span>
+            <span class="time">{{item.time}}</span>
           </div>
           <div class="chat_l_msg">
             {{item.msg}}
@@ -21,9 +21,9 @@
         </div>
         <div class="chat_r" v-else>
           <div class="chat_r_t">
-            <span class="time">13:45</span>
-            <span class="name">Marry</span>
-            <span class="avatar">M</span>
+            <span class="time">{{item.time}}</span>
+            <span class="name">{{item.username}}</span>
+            <span class="avatar">{{item.avatar}}</span>
           </div>
           <div class="chat_r_msg">
             {{item.msg}}
@@ -35,7 +35,7 @@
       <div class="tool">
         <img v-if="showDialog==false" :src="Emoji" alt="" @click="showDialog=!showDialog">
         <img v-else :src="EmojiActive" alt="" @click="showDialog=!showDialog">
-
+        <input type="file" accept="image/png, image/jpeg" @change="getImage">
         <img :src="Pic" alt="">
 
       </div>
@@ -55,7 +55,10 @@ import EmojiActive from '../assets/image/emoji_active_icon.png'
 
 import Pic from '../assets/image/pic_icon.png'
 import {VEmojiPicker} from 'v-emoji-picker'
+import Mqtt  from '../utils/im'
+
 export default {
+  mixins: [Mqtt],
   name: "Right",
   props: {
     msg: String,
@@ -63,6 +66,7 @@ export default {
   components:{
     VEmojiPicker
   },
+
   data() {
     return {
       text:'',
@@ -84,6 +88,12 @@ export default {
       ],
     };
   },
+  mounted(){
+     let that = this
+    setTimeout(()=>{
+      that.MQTTconnect()
+    },500)
+  },
   methods:{
     selectEmoji(emoji) {// 选择emoji后调用的函数
       let input = document.getElementById("input")
@@ -98,9 +108,34 @@ export default {
     },
     senMsg(){
       this.list[0].msg = this.text
+      let msg = {msg:this.text,username:localStorage.getItem('username'),time:this.$util.dateFormat(new Date(), 'hh:mm')}
+      msg = JSON.stringify(msg)
+      this.sendMessage(msg)
       this.text=''
+    },
+
+    image2Base64(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        var dataURL = canvas.toDataURL("image/png");
+        return dataURL;
+    },
+    getImgBase64(url){
+          var base64="";
+          var img = new Image();
+          img.src=url;
+          img.onload=function(){
+              base64 = this.image2Base64(img);
+              this.sendMessage(base64)
+          }
+      },
+
+    getImage(e){
+      console.log(e)
     }
-    
 
   }
 };

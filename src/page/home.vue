@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:10
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-08 00:21:22
+ * @LastEditTime: 2021-08-09 22:23:21
  * @Description: file content
 -->
 <template>
@@ -12,10 +12,10 @@
     </header>
     <div class="content">
       <div class="left">
-        <Left></Left>
+        <Left ref="LeftRank"></Left>
       </div>
       <div class="middle">
-        <Middle></Middle>
+        <Middle ref="Middle" @updateraise="setRaise"  @updatelove="setLove"></Middle>
       </div>
       <div class="right">
         <Right></Right>
@@ -28,12 +28,46 @@
 import Left from '../components/Left.vue'
 import Middle from '../components/Middle.vue'
 import Right from '../components/Right.vue'
+import Mqtt  from '../utils/im'
 
 export default {
+  mixins: [Mqtt],
   components:{Left,Right,Middle},
   data(){
     return{
       
+    }
+  },
+  mounted(){
+    this.getAccessToken()
+    // console.log(Mqtt);
+  },
+  methods:{
+    setLove(opt){
+      console.log(opt)
+      this.$refs['LeftRank'].list.forEach(v => {
+        if(v.name==opt){
+          v.count++
+        }
+      });
+      this.$refs['LeftRank'].list.sort(this.compare("count"))
+
+    },
+    setRaise(opt){
+      this.$refs['LeftRank'].list.forEach(v => {
+        if(v.name==opt){
+          v.count++
+        }
+      });
+      this.$refs['LeftRank'].list.sort(this.compare("count"))
+
+    },
+    compare(property){
+      return function(obj1,obj2){
+          var value1 = obj1[property];
+          var value2 = obj2[property];
+          return value2 - value1;     // 升序
+      }
     }
   }
 }

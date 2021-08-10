@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:04
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-08 10:44:55
+ * @LastEditTime: 2021-08-08 17:06:00
  * @Description: file content
 -->
 <template>
@@ -11,9 +11,9 @@
       <img class="logo" :src="Logo" alt="" />
       <center>Hi. Welcome 环信 MQTT 消息云</center>
       <div class="ipt">
-        <input type="text" placeholder="此处是昵称" />
+        <input type="text" v-model="username" placeholder="此处是昵称" />
       </div>
-      <button class="btn">进入聊天室</button>
+      <button class="btn" @click="register">进入聊天室</button>
     </header>
     <div class="loading" v-if="showLoading">
       <img class="imgRotate" :src="Loading" alt="" />
@@ -24,16 +24,35 @@
 <script>
 import Logo from "../assets/image/logo_icon.png";
 import Loading from "../assets/image/loading.png";
-
+// import * as Mqtt from '../utils/im'
 export default {
   components: {},
   data() {
     return {
       Logo: Logo,
       Loading: Loading,
-      showLoading: false
+      showLoading: false,
+      username:''
     };
+    
   },
+  mounted(){
+      // Mqtt.getAccessToken()
+  },
+  methods:{
+    register(){
+      //如果存在此用户 就直接登录 不存在就先注册再登陆
+     this.showLoading = true
+      this.$im.register(this.username)
+      localStorage.setItem('username',this.username)
+      setTimeout(()=>{
+        this.showLoading =false
+        this.$router.push({name:'home'})
+      },2000)
+      // Mqtt.getAccessToken()
+      // Mqtt.MQTTconnect()
+    }
+  }
 };
 </script>
 
