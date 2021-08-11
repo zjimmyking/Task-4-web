@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:42:34
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-08 00:06:12
+ * @LastEditTime: 2021-08-11 09:27:59
  * @Description: file content
  */
 import Vue from 'vue';
@@ -29,6 +29,6 @@ const routes = [
 const router = new VueRouter({
   routes,
   base: '/',
-  mode:'history'
+  mode:'hash'
 });
 export default router;
