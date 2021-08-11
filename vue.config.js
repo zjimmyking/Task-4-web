@@ -2,15 +2,16 @@
  * @Author: kincaid
  * @Date: 2021-07-04 17:12:27
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-08 12:20:56
+ * @LastEditTime: 2021-08-11 18:42:57
  * @Description: file content
  */
 
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'? '/Task-4-web/': '/',
   lintOnSave: false,
-  outputDir: 'dist',
+  outputDir: 'docs',
   configureWebpack: {
     devtool: isProd ? false: 'source-map',
     devServer: {
