@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:35
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-10 23:52:28
+ * @LastEditTime: 2021-08-13 00:33:30
  * @Description: file content
 -->
 <template>
@@ -165,7 +165,7 @@ export default {
   .middle_topic {
     margin-top: 20px;
     .topic_item {
-      width: 700px;
+      max-width: 700px;
       margin: 0 auto;
       display: flex;
       justify-content: flex-start;
@@ -179,7 +179,7 @@ export default {
         color: #191919;
       }
       .info {
-        width: 617px;
+        max-width: 617px;
         font-size: 16px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
@@ -195,7 +195,7 @@ export default {
   }
 
   .middle_btns {
-    width: 684px;
+    max-width: 684px;
     height: 154px;
     background: #ededed;
     border-radius: 10px;

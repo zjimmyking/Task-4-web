@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-08 11:48:16
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-10 23:59:11
+ * @LastEditTime: 2021-08-13 00:39:45
  * @Description: file content
  */
 import './sdk/mqtt'
@@ -113,7 +113,7 @@ export default {
       let message = new Paho.MQTT.Message(msg) //set body
       message.destinationName = this.topic // set topic
       this.mqtt.send(message)
-      console.log("send msg : " + this.topic + "   " + message.payloadString)
+      // console.log("send msg : " + this.topic + "   " + message.payloadString)
       // mqtt.unsubscribe(topic) // 取消订阅
     },
     onConnectionLost(response) {
@@ -121,7 +121,7 @@ export default {
       setTimeout(this.MQTTconnect, reconnectTimeout)
     },
     onMessageArrived(message) {
-      var topic = message.destinationName
+      // var topic = message.destinationName
       var payload = message.payloadString
       let that = this
       if(payload!='heart'){
@@ -160,7 +160,7 @@ export default {
         let name = JSON.stringify({type:'online',username: localStorage.getItem('username')})
         this.sendMessage(name);
       }
-      console.log("recv msg : " + topic + "   " + payload)
+      // console.log("recv msg : " + topic + "   " + payload)
     }
     
   }

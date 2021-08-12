@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:42
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-11 00:00:13
+ * @LastEditTime: 2021-08-13 00:41:41
  * @Description: file content
 -->
 <template>
@@ -188,6 +188,7 @@ export default {
   &_t {
     padding-bottom: 100px;
     height: 100%;
+    width: 300px;
     overflow-y: scroll;
     .chat {
       &_l {

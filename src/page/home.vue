@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:10
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-11 00:05:53
+ * @LastEditTime: 2021-08-13 00:37:16
  * @Description: file content
 -->
 <template>
@@ -66,7 +66,32 @@ export default {
           count: 121,
           info: '具体是怎么玩呢？别着急，听我慢慢道来，看完后会感慨Vue组件还能这么玩🐶，还会学会一个Stylelint插件，配有DEMO，以及隐藏在最后的彩蛋。',
           url: 'https://imgeek.org/article/825358019',
-        },
+        }, {
+          name: 'iOS性能优化-卡顿',
+          count: 110,
+          info: '图像的显示可以简单理解成先经过CPU的计算/排版/编解码等操作，然后交由GPU去完成渲染放入缓冲中，当视频控制器接受到vSync时会从缓冲中读取已经渲染完成的帧并显示到屏幕上。',
+          url: 'https://imgeek.org/article/825358099'
+        },{
+          name: '性能优化面试官想听的是什么？别再说那些老掉牙的性能优化了',
+          count: 100,
+          info: '网上性能优化的文章太多了，都说如何如何请求优化代码优化之类的，所有人都知道的事，而且实际工作中根本不可能每个项目都用到那些全部，而是应该对我们的项目有针对性的优化，你说是吗？',
+          url: 'https://imgeek.org/article/825358096'
+        },{
+          name: '使用 Electron 开发桌面应用',
+          count: 89,
+          info: '众所周知，基于react脚手架搭建的项目，入口文件为index.js，因此在上面配置完成后，我们想要启动electron应用，需要修改项目入口为main.js',
+          url: 'https://imgeek.org/article/825358094'
+        },{
+          name: 'iOS 渲染过程',
+          count: 88,
+          info: '应用运行的卡顿率是一个十分重要的指标，相比慢、发热、占用内存高来讲，卡顿是用户第一时间能感知的东西，三步两卡的应用基本逃不出被卸载的命运，要想优化卡顿就要搞清楚画面卡住不动的原因，这就需要对整个渲染过程有一定了解，本文会从图层说起，来聊聊整个渲染过程以及优化点，在写这篇文章之前笔者努力在想，对于完全没有做过图形处理相关工作的工程师来说，理解这个过程是有一定难度的，那么要怎么写才可以脉络清晰又浅显易懂呢，想来想去还是从日常开发中的界面UI开始分析吧，毕竟可直接感知',
+          url: 'https://imgeek.org/article/825358088'
+        },{
+          name: 'Compose | 一文理解神奇的Modifier',
+          count: 49,
+          info: 'Jetpack Compose的预览版出来已经有很长时间了，相信很多读者都进行了一番尝试。注意：下文如无特殊说明，Compose均指代Jetpack Compose',
+          url: 'https://imgeek.org/article/825358077'
+        }
       ],
     }
   },
@@ -131,7 +156,9 @@ export default {
 <style scope lang="less">
 .Home{
   height: 100%;
-  min-width: 1440px;
+  max-width: 1440px;
+  margin: 0 auto;
+  background: #F5F5F6;
 }
 .header{
   height: 44px;
@@ -140,13 +167,13 @@ export default {
   text-align: center;
   font-size: 14px;
   line-height: 44px;
-  width: 1440px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 .content{
   display: flex;
   justify-content: space-between;
-  width: 1440px;
+  // max-width: 1440px;
   height: calc(100% - 44px);
   margin: 0 auto;
   .left{
@@ -154,20 +181,21 @@ export default {
     height: 100%;
     margin: 0;
     background: #F5F5F6;
-
+    border-right: 1px solid #E5DFDF;
   }
   .middle{
-    width: 848px;
+    max-width: 848px;
+    padding: 0 20px;
     height: 100%;
     background: #F5F5F6;
-    border-left: 1px solid #E5DFDF;
-    border-right: 1px solid #E5DFDF;
-
+    box-sizing: border-box;
   }
   .right{
     width: 300px;
     height: 100%;
     background: #F5F5F6;
+    border-left: 1px solid #E5DFDF;
+
     }
 }
 
