@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:27
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-10 23:44:44
+ * @LastEditTime: 2021-08-15 15:16:18
  * @Description: file content
 -->
 <template>
@@ -11,11 +11,11 @@
       <span>排行榜</span>
     </header>
     <div class="left_topic" v-for="(item, index) in list" :key="index">
-      <div class="left_topic_l">
+      <div class="left_topic_l" @click="jumpArticle(item.url)">
         <span class="point">{{ index + 1 }}</span>
         <span class="name">{{ item.name }}</span>
       </div>
-      <div class="count">
+      <div class="count" @click="raise(item.name)">
         <span>{{item.count}}</span>
       </div>
     </div>
@@ -64,6 +64,14 @@ export default {
       // ],
     };
   },
+  methods:{
+    jumpArticle(url){
+      location.href=url
+    },
+    raise(opt){
+      this.$emit('updateraise',opt,false)
+    }
+  }
 };
 </script>
 
@@ -95,6 +103,8 @@ export default {
       display: flex;
       justify-content: flex-start;
       width: 210px;
+      cursor: pointer;
+
     }
     .point {
       color: #e96d6d;
