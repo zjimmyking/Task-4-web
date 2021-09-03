@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:10
  * @LastEditors: kincaid
- * @LastEditTime: 2021-09-03 01:11:54
+ * @LastEditTime: 2021-09-03 11:36:47
  * @Description: file content
 -->
 <template>
@@ -179,7 +179,7 @@ export default {
       this.$refs.Right.sendMessage(_list)
        this.list.forEach(v => {
         if(v.name==opt){
-          this.idx=v.id-1
+          // this.idx=v.id-1
         }
       });
 
