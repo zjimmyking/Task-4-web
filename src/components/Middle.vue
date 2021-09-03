@@ -2,14 +2,14 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:35
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-15 15:18:36
+ * @LastEditTime: 2021-09-03 02:01:25
  * @Description: file content
 -->
 <template>
   <div class="Middle">
     <div class="time">
       <img :src="TimeIcon" alt="" />
-      <p>倒计时：0:{{count}}</p>
+      <p>倒计时：0:{{clockTime}}</p>
     </div>
     <div class="middle_topic">
       <div class="topic_item">
@@ -53,6 +53,7 @@ import Raise from "../assets/image/raise_icon.png";
 import TimeIcon from "../assets/image/time_icon.png";
 export default {
   props: {
+    clockTime: Number,
     list: Array,
     item: Object,
     idx: {
@@ -71,7 +72,7 @@ export default {
     };
   },
   mounted(){
-    this.getCountDown()
+    // this.getCountDown()
   },
   methods:{
     raise(){
@@ -83,12 +84,24 @@ export default {
       this.$emit('updatelove',this.item.name)
     },
     getCountDown(){
-      const TIME_COUNT = 60;
+      
+      const TIME_COUNT = 10;
       if (!this.timer) {
-        this.count = TIME_COUNT;
+        this.count = this.clockTime;
+        console.log(this.count);
         this.timer = setInterval(() => {
-        if (this.count > 0 && this.count <= TIME_COUNT) {
+        if (this.count >0 && this.count <= TIME_COUNT) {
           this.count--;
+          let flag = true
+          setTimeout(()=>{
+            flag = false
+          },600)
+          if(flag){
+            this.$emit('updateCount',this.count)
+            
+          }else{
+
+          }
         } else {
           clearInterval(this.timer);
           this.timer = null;
@@ -97,7 +110,7 @@ export default {
           // if(this.idx==10){
           //   this.idx=0
           // }
-          this.$emit('updateIdx',this.list)
+          // this.$emit('updateIdx',this.list)
           this.getCountDown()
           }
         }, 1000)

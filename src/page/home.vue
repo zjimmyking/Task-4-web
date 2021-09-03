@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:10
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-15 15:17:15
+ * @LastEditTime: 2021-09-03 01:11:54
  * @Description: file content
 -->
 <template>
@@ -15,10 +15,10 @@
         <Left :list="list" ref="LeftRank"  @updateraise="setRaise"></Left>
       </div>
       <div class="middle">
-        <Middle ref="Middle" :item="itemArticle" :idx='idx' @updateIdx="updateIdx" :list='list' @updateraise="setRaise"  @updatelove="setLove"></Middle>
+        <Middle ref="Middle" :clockTime="clockTime" @updateCount="updateCount" :item="list[idx]" :idx='idx' @updateIdx="updateIdx" :list='list' @updateraise="setRaise"  @updatelove="setLove"></Middle>
       </div>
       <div class="right">
-        <Right @updateList="updateList" ref="Right" @getCount='getCount' :list='list'></Right>
+        <Right @updateList="updateList" ref="Right" @getCount='getCount' :list='list' @getTimeCount="getTimeCount" @getListIdx="getListIdx"></Right>
       </div>
     </div>
     </div>
@@ -35,6 +35,7 @@ export default {
   components:{Left,Right,Middle},
   data(){
     return{
+      clockTime: 10,
       itemArticle: {
           id: 1,
           name: "还不会Hook？一份React Hook学习笔记",
@@ -122,9 +123,26 @@ export default {
     // }, 1500);
   },
   methods:{
+    getTimeCount(opt){
+      this.clockTime= opt
+    },
+    getListIdx(opt){
+      this.idx= opt
+    },
+    updateCount(opt){
+      let obj = {
+        type: 'timeCount',
+        time: opt
+      }
+      let str = JSON.stringify(obj)
+      this.$refs.Right.sendMessage(str)
+
+    },
     updateList(opt){
-      // console.log(opt);
+      console.log(opt);
       this.list = opt
+      this.itemArticle = this.list[this.idx]
+
     },
     setLove(opt){
       this.list.forEach(v => {
@@ -177,9 +195,17 @@ export default {
       this.count = opt
     },
     updateIdx(list){
-      let idx = Math.ceil(Math.random()*10)-1
-      this.idx=idx
-      this.itemArticle = list[idx]
+    //   // let idx = Math.ceil(Math.random()*10)-1
+    //   // this.idx=idx
+    //   // this.itemArticle = this.list[idx]
+    //   //同步题目
+    //   let obj = {
+    //     type: "topicIndex",
+    //     idx: idx
+    //   }
+    //   let str = JSON.stringify(obj)
+    //   this.$refs.Right.sendMessage(str)
+
     }
   }
 }

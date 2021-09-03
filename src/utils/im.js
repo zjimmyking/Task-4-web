@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-08 11:48:16
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-13 00:39:45
+ * @LastEditTime: 2021-09-03 09:39:42
  * @Description: file content
  */
 import './sdk/mqtt'
@@ -19,7 +19,7 @@ var username = 'test' // 用户名，在console中注册
 // var password ='YWMtEa31WvKOEeuKAoGk5jJh8ajI7Z3Lsk1KtyzEZ3_lc1QQiFTg8o4R65I2hUgU8EeNAwMAAAF7AE6YsgBPGgD4W3LbZaK49g85xoMrFu_2OJLvHARRy4p_REb8Sr7pIw' // 用户密码为第一步中申请的token
 // var password = ''
 let Paho = window.Paho || {}
-
+let timer = null
 // var mqtt
 export default {
   data() {
@@ -30,6 +30,8 @@ export default {
       topic: 't/t1',
       msgList: [],
       topicList:'',
+      clockTime: 60,
+      idx: 0
     }
   },
   methods: {
@@ -107,7 +109,55 @@ export default {
       message.destinationName = this.topic // set topic
       this.mqtt.send(message)
       console.log("send msg : " + this.topic + "   " + message.payloadString)
+
+      //获取最新的秒 和 index
+      setTimeout(()=>{
+        
+        this.getCountDown()
+
+      },1000)
       // mqtt.unsubscribe(topic) // 取消订阅
+    },
+    getCountDown(){
+      const TIME_COUNT = 60;
+      if (!timer) {
+        let count = this.clockTime;
+
+        var timer = setInterval(() => {
+          let __obj1 = {
+            type: 'topicIndex',
+            idx: this.idx
+          }
+          let __str1 = JSON.stringify(__obj1)
+          this.sendMessage(__str1);
+        if (count >0 && count <= TIME_COUNT) {
+     
+
+          count--;
+          let obj = {
+            type: 'timeCount',
+            time: count
+          }
+          let str = JSON.stringify(obj)
+          this.sendMessage(str);
+
+         
+        } else {
+          clearInterval(timer);
+          timer = null;
+          this.clockTime = 60
+          let _idx = Math.ceil(Math.random()*10)-1
+            this.idx=_idx
+            let _obj1 = {
+              type: 'topicIndex',
+              idx: _idx
+            }
+            let _str1 = JSON.stringify(_obj1)
+            this.sendMessage(_str1);
+            this.getCountDown()
+          }
+        }, 1000)
+      }
     },
     sendMessage (msg) {
       let message = new Paho.MQTT.Message(msg) //set body
@@ -156,6 +206,22 @@ export default {
         if(obj.type=='list'){
           this.topicList = obj.list
         }
+        //获取当前题目的索引
+        if(obj.type=='topicIndex'){
+          this.idx = obj.idx
+        }
+        //同步秒
+        if(obj.type=='timeCount'){
+          if(obj.time>=0){
+            this.clockTime = obj.time
+          
+
+          }else{
+
+            
+          }
+        }
+
       }else{
         let name = JSON.stringify({type:'online',username: localStorage.getItem('username')})
         this.sendMessage(name);

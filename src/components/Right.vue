@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:42
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-15 14:06:12
+ * @LastEditTime: 2021-09-03 02:17:31
  * @Description: file content
 -->
 <template>
@@ -99,6 +99,16 @@ export default {
     topicList(n){
       if(n=='') return
       this.$emit('updateList',n)
+    },
+    clockTime(n){
+      if(n<0) return
+      
+      this.$emit('getTimeCount',n)
+    },
+    idx(n){
+      if(n=='') return
+      
+      this.$emit('getListIdx',n)
     }
   },
   mounted() {
