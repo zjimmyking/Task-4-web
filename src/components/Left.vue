@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:27
  * @LastEditors: kincaid
- * @LastEditTime: 2021-09-03 18:10:34
+ * @LastEditTime: 2021-09-03 18:44:30
  * @Description: file content
 -->
 <template>
@@ -66,7 +66,7 @@ export default {
   },
   methods:{
     jumpArticle(url){
-      window.open=url
+      window.open(url)
     },
     raise(opt){
       this.$emit('updateraise',opt,false)
