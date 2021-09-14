@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-08 11:48:16
  * @LastEditors: kincaid
- * @LastEditTime: 2021-09-03 09:39:42
+ * @LastEditTime: 2021-09-14 19:40:27
  * @Description: file content
  */
 import './sdk/mqtt'
@@ -20,6 +20,7 @@ var username = 'test' // 用户名，在console中注册
 // var password = ''
 let Paho = window.Paho || {}
 let timer = null
+let itv = null
 // var mqtt
 export default {
   data() {
@@ -110,15 +111,12 @@ export default {
       this.mqtt.send(message)
       console.log("send msg : " + this.topic + "   " + message.payloadString)
 
-      //获取最新的秒 和 index
-      setTimeout(()=>{
-        
-        this.getCountDown()
-
-      },1000)
+     
       // mqtt.unsubscribe(topic) // 取消订阅
     },
+    //获取倒计时
     getCountDown(){
+      console.log('现在是我在同步时间了')
       const TIME_COUNT = 60;
       if (!timer) {
         let count = this.clockTime;
@@ -138,6 +136,7 @@ export default {
             type: 'timeCount',
             time: count
           }
+          //互相都发倒计时导致本地settimeout 不同步 时间长了就会闪 此时只能保证一个人同步
           let str = JSON.stringify(obj)
           this.sendMessage(str);
 
@@ -202,6 +201,14 @@ export default {
         //设置z在线人数
         if(obj.type=="onlineCount"){
           this.onlineCount = obj.count.length
+          if(this.onlineList.length==1){
+            //获取最新的秒 和 index
+            setTimeout(()=>{
+              
+              this.getCountDown()
+    
+            },1000)
+          }
         }
         if(obj.type=='list'){
           this.topicList = obj.list
@@ -212,10 +219,15 @@ export default {
         }
         //同步秒
         if(obj.type=='timeCount'){
+          //两秒之内要是有人倒计时  我就不管了
+          clearInterval(itv)
+          //如果两秒还没有人同步 就让我来 我要是同步了 告诉别人赶紧停止吧
+          itv = setTimeout(()=>{
+            this.getCountDown()
+          },1800)
           if(obj.time>=0){
             this.clockTime = obj.time
-          
-
+            
           }else{
 
             
@@ -223,8 +235,12 @@ export default {
         }
 
       }else{
-        let name = JSON.stringify({type:'online',username: localStorage.getItem('username')})
-        this.sendMessage(name);
+        // let that = this
+        // setInterval(()=>{
+          let name = JSON.stringify({type:'online',username: localStorage.getItem('username')})
+          this.sendMessage(name);
+        // },2000)
+        
       }
       // console.log("recv msg : " + topic + "   " + payload)
     }

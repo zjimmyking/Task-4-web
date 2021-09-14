@@ -2,12 +2,13 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:10
  * @LastEditors: kincaid
- * @LastEditTime: 2021-09-03 11:36:47
+ * @LastEditTime: 2021-09-14 18:54:23
  * @Description: file content
 -->
 <template>
   <div class="Home">
     <header class="header">
+      <span class="rank-tit">排行榜</span>
     环信 MQTT 消息云（当前在线：{{count}}）
     </header>
     <div class="content">
@@ -35,7 +36,7 @@ export default {
   components:{Left,Right,Middle},
   data(){
     return{
-      clockTime: 10,
+      clockTime: 60,
       itemArticle: {
           id: 1,
           name: "还不会Hook？一份React Hook学习笔记",
@@ -212,6 +213,15 @@ export default {
 </script>
 
 <style scope lang="less">
+.rank-tit{
+  display: block;
+  width: 275px;
+  float: left;
+  font-size: 18px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+
+}
 .Home{
   height: 100%;
   max-width: 1440px;

@@ -2,14 +2,14 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:27
  * @LastEditors: kincaid
- * @LastEditTime: 2021-09-03 18:44:30
+ * @LastEditTime: 2021-09-14 18:51:31
  * @Description: file content
 -->
 <template>
   <div class="Left">
-    <header class="header">
-      <span>排行榜</span>
-    </header>
+    <!-- <header class="header">
+      
+    </header> -->
     <div class="left_topic" v-for="(item, index) in list" :key="index">
       <div class="left_topic_l" @click="jumpArticle(item.url)">
         <span class="point">{{ index + 1 }}</span>
