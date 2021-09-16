@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-08 11:48:16
  * @LastEditors: kincaid
- * @LastEditTime: 2021-09-14 19:40:27
+ * @LastEditTime: 2021-09-16 23:25:46
  * @Description: file content
  */
 import './sdk/mqtt'
@@ -224,7 +224,7 @@ export default {
           //如果两秒还没有人同步 就让我来 我要是同步了 告诉别人赶紧停止吧
           itv = setTimeout(()=>{
             this.getCountDown()
-          },1800)
+          },2000)
           if(obj.time>=0){
             this.clockTime = obj.time
             
