@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:42
  * @LastEditors: kincaid
- * @LastEditTime: 2021-09-03 02:17:31
+ * @LastEditTime: 2021-09-18 09:54:33
  * @Description: file content
 -->
 <template>
@@ -196,7 +196,7 @@ export default {
   position: relative;
   height: 100%;
   &_t {
-    padding-bottom: 100px;
+    padding-bottom: 160px;
     height: 100%;
     width: 300px;
     overflow-y: scroll;
