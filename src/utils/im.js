@@ -2,21 +2,23 @@
  * @Author: kincaid
  * @Date: 2021-08-08 11:48:16
  * @LastEditors: kincaid
- * @LastEditTime: 2021-09-16 23:25:46
+ * @LastEditTime: 2021-10-20 16:54:46
  * @Description: file content
  */
 import './sdk/mqtt'
-var host = 'on4ng0.cn1.mqtt.chat' // 设置当前用户的接入点域名，接入点获取方法请参考接入准备章节文档
+var host = '' // 设置当前用户的接入点域名，接入点获取方法请参考接入准备章节文档
+var username = '' // 用户名，在console中注册
+var password ='' // 用户密码为第一步中申请的token
+var appId = '' // 从console控制台获取
+
 var port = 443 // WebSocket 协议服务端口，如果是走 HTTPS，设置443端口
 // var topic = 't/t1' // 需要订阅或发送消息的topic名称
 var useTLS = true // 是否走加密 HTTPS，如果走 HTTPS，设置为 true
 var cleansession = true
 var deviceId = 'test'+new Date().getTime() // MQTT 用户自定义deviceID
-var appId = 'on4ng0' // 从console控制台获取
 var clientId = deviceId + '@' + appId // deviceID@AppID
 var reconnectTimeout = 5000 // 超时重连时间
-var username = 'test' // 用户名，在console中注册
-// var password ='YWMtEa31WvKOEeuKAoGk5jJh8ajI7Z3Lsk1KtyzEZ3_lc1QQiFTg8o4R65I2hUgU8EeNAwMAAAF7AE6YsgBPGgD4W3LbZaK49g85xoMrFu_2OJLvHARRy4p_REb8Sr7pIw' // 用户密码为第一步中申请的token
+
 // var password = ''
 let Paho = window.Paho || {}
 let timer = null
@@ -79,8 +81,8 @@ export default {
       )
     
       var options = {
-        userName: 'test',
-        password: 'YWMtEa31WvKOEeuKAoGk5jJh8ajI7Z3Lsk1KtyzEZ3_lc1QQiFTg8o4R65I2hUgU8EeNAwMAAAF7AE6YsgBPGgD4W3LbZaK49g85xoMrFu_2OJLvHARRy4p_REb8Sr7pIw',
+        userName: username,
+        password:  password,
         useSSL: true,
         timeout: 3,
         onSuccess: this.onConnect,
@@ -201,13 +203,15 @@ export default {
         //设置z在线人数
         if(obj.type=="onlineCount"){
           this.onlineCount = obj.count.length
+          console.log(obj.count.length);
           if(this.onlineList.length==1){
             //获取最新的秒 和 index
-            setTimeout(()=>{
-              
+            clearTimeout(itv)
+            //如果两秒还没有人同步 就让我来 我要是同步了 告诉别人赶紧停止吧
+            itv = setTimeout(()=>{
+              console.log('wow');
               this.getCountDown()
-    
-            },1000)
+            },2000)
           }
         }
         if(obj.type=='list'){
@@ -220,11 +224,12 @@ export default {
         //同步秒
         if(obj.type=='timeCount'){
           //两秒之内要是有人倒计时  我就不管了
-          clearInterval(itv)
+          clearTimeout(itv)
+          console.log(new Date());
           //如果两秒还没有人同步 就让我来 我要是同步了 告诉别人赶紧停止吧
           itv = setTimeout(()=>{
             this.getCountDown()
-          },2000)
+          },3000)
           if(obj.time>=0){
             this.clockTime = obj.time
             
