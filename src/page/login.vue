@@ -2,7 +2,7 @@
  * @Author: kincaid
  * @Date: 2021-08-07 23:37:04
  * @LastEditors: kincaid
- * @LastEditTime: 2021-08-10 15:34:32
+ * @LastEditTime: 2021-11-22 23:02:37
  * @Description: file content
 -->
 <template>
@@ -24,8 +24,9 @@
 <script>
 import Logo from "../assets/image/logo_icon.png";
 import Loading from "../assets/image/loading.png";
-// import * as Mqtt from '../utils/im'
+import Mqtt  from '../utils/im'
 export default {
+  mixins: [Mqtt],
   components: {},
   data() {
     return {
@@ -37,7 +38,7 @@ export default {
     
   },
   mounted(){
-      // Mqtt.getAccessToken()
+      this.getAccessToken()
   },
   methods:{
     register(){

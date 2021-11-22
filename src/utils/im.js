@@ -2,14 +2,17 @@
  * @Author: kincaid
  * @Date: 2021-08-08 11:48:16
  * @LastEditors: kincaid
- * @LastEditTime: 2021-10-20 16:54:46
+ * @LastEditTime: 2021-11-22 23:26:57
  * @Description: file content
  */
 import './sdk/mqtt'
+
 var host = '' // 设置当前用户的接入点域名，接入点获取方法请参考接入准备章节文档
-var username = '' // 用户名，在console中注册
-var password ='' // 用户密码为第一步中申请的token
+var username = '' // 用户名，在console中注册或创建 需要替换成自己的
+var password = '' //创建的用户时候的密码 需要替换成自己的
 var appId = '' // 从console控制台获取
+
+var token //getToken后获取 链接mqtt使用
 
 var port = 443 // WebSocket 协议服务端口，如果是走 HTTPS，设置443端口
 // var topic = 't/t1' // 需要订阅或发送消息的topic名称
@@ -19,7 +22,6 @@ var deviceId = 'test'+new Date().getTime() // MQTT 用户自定义deviceID
 var clientId = deviceId + '@' + appId // deviceID@AppID
 var reconnectTimeout = 5000 // 超时重连时间
 
-// var password = ''
 let Paho = window.Paho || {}
 let timer = null
 let itv = null
@@ -38,7 +40,6 @@ export default {
     }
   },
   methods: {
-    // 客户端获取token(password)代码示例如下： 
     getAccessToken () {
       var grantType = 'password'
       var request = new XMLHttpRequest()
@@ -50,7 +51,6 @@ export default {
       var appName = 'huanxinmqtt'
       // 拼接token接口
       var api = `http://${baseUrl}/${orgName}/${appName}/token`
-      var token = ''
       // Post请求
       request.open('post', api)
       request.onreadystatechange = function () {
@@ -61,14 +61,14 @@ export default {
           console.log(token, 'accessToken')
           localStorage.setItem('token',token)
         } else {
-          throw new Error('请求失败，响应码为' + request.status)
+          // throw new Error('请求失败，响应码为' + request.status)
         }
       }
 
       var params = {
         grant_type: grantType,
-        username: 98989,
-        password: 123
+        username: username,
+        password: password
       }
       // 发送ajax请求
       request.send(JSON.stringify(params))
@@ -79,10 +79,9 @@ export default {
         port,
         clientId
       )
-    
       var options = {
         userName: username,
-        password:  password,
+        password:  token,
         useSSL: true,
         timeout: 3,
         onSuccess: this.onConnect,
@@ -97,8 +96,6 @@ export default {
       this.mqtt.onConnectionLost = this.onConnectionLost
       this.mqtt.onMessageArrived = this.onMessageArrived
       if (username != null) {
-        // options.userName = 'haha'
-        // options.password = '123'
         options.useSSL = useTLS // 如果使用 HTTPS 加密则配置为 true
       }
       this.mqtt.connect(options)
